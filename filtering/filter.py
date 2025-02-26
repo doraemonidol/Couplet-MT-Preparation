@@ -55,9 +55,7 @@ def prepare(source_file, target_file, source_lang, target_lang, lower=False):
 
     # Drop too-long rows (source or target)
     # Based on your language, change the values "2" and "200"
-    df["Too-Long"] = ((df['Source'].str.count(' ')+1) > (df['Target'].str.count(' ')+1) * 2) |  \
-                     ((df['Target'].str.count(' ')+1) > (df['Source'].str.count(' ')+1) * 2) |  \
-                     ((df['Source'].str.count(' ')+1) > 200) |  \
+    df["Too-Long"] = ((df['Source'].str.count(' ')+1) > 200) |  \
                      ((df['Target'].str.count(' ')+1) > 200)
                 
     #display(df.loc[df['Too-Long'] == True]) # display only too long rows
@@ -104,8 +102,8 @@ def prepare(source_file, target_file, source_lang, target_lang, lower=False):
 
 
     # Shuffle the data
-    df = df.sample(frac=1).reset_index(drop=True)
-    print("--- Rows Shuffled\t\t\t--> Rows:", df.shape[0])
+    df = df.sample(frac=1, random_state=42).reset_index(drop=True)
+    print("--- Rows Shuffled with state=42\t\t--> Rows:", df.shape[0])
 
 
     # Write the dataframe to two Source and Target files
